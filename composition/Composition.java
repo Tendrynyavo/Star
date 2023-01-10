@@ -97,4 +97,9 @@ public class Composition extends BddObject {
         composition.setTable("Produit"); // VIEW pour avoir tous les produits
         return convert(composition.getData(BddObject.getPostgreSQL(), null));
     }
+    
+    public void fabriquer(double quantite) throws Exception {
+        Fabrication fabrication = new Fabrication(this, quantite);
+        fabrication.insert(null);
+    }
 }
