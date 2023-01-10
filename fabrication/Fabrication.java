@@ -16,8 +16,14 @@ public class Fabrication extends BddObject {
 // Setter
     public void setIdFabrication(String idFabrication) { this.idFabrication = idFabrication; }
     public void setIdComposition(String idComposition) { this.idComposition = idComposition; }
-    public void setQuantite(double quantite) { this.quantite = quantite; }
-    public void setPrixUnitaire(double prixUnitaire) { this.prixUnitaire = prixUnitaire; }
+    public void setQuantite(double quantite) throws Exception { 
+        if (quantite < 0) throw new Exception("Quantite Invalide");
+        this.quantite = quantite; 
+    }
+    public void setPrixUnitaire(double prixUnitaire) throws Exception { 
+        if (prixUnitaire < 0) throw new Exception("Prix Unitaire Invalide");
+        this.prixUnitaire = prixUnitaire;
+    }
     public void setDate(Date date) { this.date = date; }
 
 // Getter
