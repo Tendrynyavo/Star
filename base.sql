@@ -7,7 +7,6 @@ CREATE TABLE Composants(
 );
 
 CREATE SEQUENCE seqcomposants
-    AS integer
     START WITH 1
     INCREMENT BY 1
     MAXVALUE 100;
@@ -36,7 +35,6 @@ CREATE TABLE Fabrication(
 );
 
 CREATE SEQUENCE seqfabrication
-    AS integer
     START WITH 1
     INCREMENT BY 1
     MAXVALUE 100;
@@ -56,7 +54,17 @@ CREATE VIEW Melange AS
     FROM Compositions compo
         JOIN Composants c ON c.idComposant=compo.idComposant;
 
-CREATE VIEW Melange AS 
+CREATE VIEW Produit AS 
     SELECT *
     FROM Composants
     WHERE produit = true;
+
+INSERT INTO Compositions(idComposition, idComposant, quantite) VALUES
+    ('C007', 'C006', 0.2),
+    ('C007', 'C004', 0.8),
+    ('C007', 'C005', 0.3),
+    ('C004', 'C001', 0.5),
+    ('C004', 'C002', 0.2),
+    ('C004', 'C003', 0.3),
+    ('C006', 'C008', 0.5),
+    ('C006', 'C009', 0.3);
