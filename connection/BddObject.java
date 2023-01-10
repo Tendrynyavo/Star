@@ -2,9 +2,7 @@ package connection;
 
 
 import java.sql.*;
-
 import java.util.ArrayList;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -16,37 +14,17 @@ public abstract class BddObject {
     String table;
     int countPK;
 
-    public String getPrefix() {
-        return prefix;
-    }
+// Getter
+    public String getPrefix() { return prefix; }
+    public String getTable() { return table; }
+    public String getFunctionPK() { return functionPK; }
+    public int getCountPK() { return countPK; }
 
-    public String getTable() {
-        return table;
-    }
-
-    public void setTable(String table) {
-        this.table = table;
-    }
-
-    public String getFunctionPK() {
-        return functionPK;
-    }
-
-    public int getCountPK() {
-        return countPK;
-    }
-
-    public void setCountPK(int countPK) {
-        this.countPK = countPK;
-    }
-
-    public void setFunctionPK(String function) {
-        this.functionPK = function;
-    }
-
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
-    }
+// Setter
+    public void setTable(String table) { this.table = table; }
+    public void setCountPK(int countPK) { this.countPK = countPK; }
+    public void setFunctionPK(String function) { this.functionPK = function; }
+    public void setPrefix(String prefix) { this.prefix = prefix; }
 
     public static Connection getOracle() throws SQLException, ClassNotFoundException {
         Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -57,7 +35,7 @@ public abstract class BddObject {
 
     public static Connection getPostgreSQL() throws SQLException, ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/brasserie?user=postgres&password=nnnn");
+        Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/brasserie?user=postgres&password=pixel");
         connection.setAutoCommit(false);
         return connection;
     }
@@ -76,29 +54,29 @@ public abstract class BddObject {
         return colonnes;
     }
 
-    public Object[] getData(Connection connection, String order, String... predicat) throws Exception {
+    public BddObject[] getData(Connection connection, String order, String... predicat) throws Exception {
         String sql = (predicat.length == 0) ? "SELECT * FROM " + this.getTable() 
                     : "SELECT * FROM " + this.getTable() + " WHERE " + predicat(predicat);
         if (order != null) sql += " ORDER BY " + order;
         return getData(sql, connection);
     }
 
-    public Object[] getData(String query, Connection connection) throws Exception {
+    public BddObject[] getData(String query, Connection connection) throws Exception {
         Statement statement = connection.createStatement();
         ResultSet result = statement.executeQuery(query);
         String[] liste = listColumn(query, connection); // get liste of column length
-        Object[] objects = convertToObject(result, liste.length);
+        BddObject[] objects = convertToObject(result, liste.length);
         result.close();
         statement.close();
         connection.close();
         return objects;
     }
 
-    public Object[] convertToObject(ResultSet result, int attribut) throws Exception {
+    public BddObject[] convertToObject(ResultSet result, int attribut) throws Exception {
         Field[] attributs = this.getClass().getDeclaredFields();
-        List<Object> objects = new ArrayList<>();
+        List<BddObject> objects = new ArrayList<>();
         while (result.next()) {
-            Object object = this.getClass().getConstructor().newInstance();
+            BddObject object = this.getClass().getConstructor().newInstance();
             for (int i = 0; i < attribut; i++) {
                 Method setter = this.getClass().getMethod("set" + toUpperCaseFisrtLetter(attributs[i].getName()), attributs[i].getType()); // Setter of this object
                 Method getter = ResultSet.class.getMethod("get" + toUpperCaseFisrtLetter(attributs[i].getType().getSimpleName()), int.class);  // Method in ResultSet
@@ -107,7 +85,7 @@ public abstract class BddObject {
             }
             objects.add(object);
         }
-        return objects.toArray();
+        return objects.toArray(new BddObject[objects.size()]);
     }
 
     public String predicat(String[] predicats) throws Exception {
