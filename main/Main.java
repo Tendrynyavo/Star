@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         try {
     // Code de Test de BddObject
-            // Composition[] compositions = new Composition[10];
+            // Composition[] compositions = new Composition[11];
             // compositions[0] = new Composition("Maïs", true, false, 2000);
             // compositions[1] = new Composition("Levure", true, false, 5000);
             // compositions[2] = new Composition("Conservateur", true, false, 5000);
@@ -18,13 +18,13 @@ public class Main {
             // compositions[7] = new Composition("Eau", true, false, 1000);
             // compositions[8] = new Composition("Gaz", true, false, 2000);
             // compositions[9] = new Composition("Arôme", true, false, 3000);
+            // compositions[10] = new Composition("Limonade", false, true, 0);
             // for (Composition composition : compositions) {
             //     composition.insert(null);
             // }
+
             Composition[] produits = Composition.getProduits(); // Tous les Produits dans la base de donnée
-            for (Composition produit : produits) {
-                System.out.println(produit.getPrixUnitaire());
-            }
+            produits[0].fabriquer(500);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
