@@ -1,7 +1,7 @@
 package composition;
 
 import java.util.ArrayList;
-
+import fabrication.*;
 import connection.BddObject;
 
 public class Composition extends BddObject {

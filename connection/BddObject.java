@@ -35,7 +35,7 @@ public abstract class BddObject {
 
     public static Connection getPostgreSQL() throws SQLException, ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/brasserie?user=postgres&password=pixel");
+        Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/star?user=postgres&password=password");
         connection.setAutoCommit(false);
         return connection;
     }

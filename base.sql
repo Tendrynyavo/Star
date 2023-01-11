@@ -27,11 +27,12 @@ CREATE TABLE Compositions(
     quantite DOUBLE PRECISION
 );
 
-CREATE TABLE Fabrication(
+CREATE TABLE Fabrications(
     idFabrication VARCHAR PRIMARY KEY,
-    idComposition VARCHAR REFERENCES students (student_id),
+    idComposition VARCHAR REFERENCES Composants (idComposant),
     prixDeRevient DOUBLE PRECISION,
-    quantite DOUBLE PRECISION
+    quantite DOUBLE PRECISION,
+    date DATE
 );
 
 CREATE SEQUENCE seqfabrication
@@ -52,7 +53,7 @@ $$;
 CREATE VIEW Melange AS 
     SELECT compo.idComposant, c.nom, c.premiere, c.produit, c.prixUnitaire, compo.quantite, compo.idComposition
     FROM Compositions compo
-        JOIN Composants c ON c.idComposant=compo.idComposant;
+        JOIN Composants c ON c.idComposant=compo.idComposant;       
 
 CREATE VIEW Produit AS 
     SELECT *
